@@ -45,7 +45,8 @@ function renderStaticText() {
   `;
   langEnBtn.classList.toggle('active', getLocale() === 'en');
   langKoBtn.classList.toggle('active', getLocale() === 'ko');
-  muteBtn.textContent = isSoundEnabled() ? t('muteButton') : t('unmuteButton');
+  muteBtn.textContent = isSoundEnabled() ? '🔊' : '🔇';
+  muteBtn.title = isSoundEnabled() ? t('muteButton') : t('unmuteButton');
 }
 
 langEnBtn.addEventListener('click', () => setLocale('en'));

@@ -79,10 +79,18 @@ export function initControls(game, dom, { onNewGame, playerPhotos = [], aiPlayer
   }
 
   function renderTurnBanner() {
+    const idx = game.currentPlayerIndex;
     const player = getCurrentPlayer(game);
-    const color = PLAYER_COLORS[game.currentPlayerIndex];
-    dom.turnBanner.textContent = t('turnBanner', { name: displayName(player, game.currentPlayerIndex) });
-    dom.turnBanner.style.borderLeft = `6px solid ${color}`;
+    const pending = game.pendingThrows.length;
+    dom.turnBanner.innerHTML = '';
+    dom.turnBanner.style.borderLeft = '';
+    const dot = el('span', { class: 'turn-dot' });
+    dot.style.background = PLAYER_COLORS[idx];
+    const info = el('div', { class: 'turn-info' }, [
+      el('div', { class: 'turn-who', text: displayName(player, idx) }),
+      el('div', { class: 'turn-sub', text: pending > 0 ? t('movesToPlace', { n: pending }) : t('throwPrompt') }),
+    ]);
+    dom.turnBanner.append(dot, info);
   }
 
   function renderScoreboard() {
@@ -90,12 +98,11 @@ export function initControls(game, dom, { onNewGame, playerPhotos = [], aiPlayer
     game.players.forEach((player, idx) => {
       const finished = player.tokens.filter((tk) => tk.finished).length;
       const teamSuffix = player.team != null ? t('teamSuffix', { team: player.team + 1 }) : '';
-      const card = el('div', {
-        class: `score-card${idx === game.currentPlayerIndex ? ' current' : ''}`,
-        text: t('scoreLine', { name: displayName(player, idx), finished, total: player.tokens.length }) + teamSuffix,
-      });
-      card.style.borderColor = PLAYER_COLORS[idx];
-      dom.scoreboard.appendChild(card);
+      const nm = el('span', { class: 'nm', text: displayName(player, idx) + teamSuffix });
+      nm.style.color = PLAYER_COLORS[idx];
+      const fin = el('span', { class: 'fin', text: t('scoreHome', { finished, total: player.tokens.length }) });
+      const row = el('div', { class: `score-row${idx === game.currentPlayerIndex ? ' current' : ''}` }, [nm, fin]);
+      dom.scoreboard.appendChild(row);
     });
   }
 
@@ -314,14 +321,16 @@ export function initControls(game, dom, { onNewGame, playerPhotos = [], aiPlayer
 
   function animateSticksReveal(sticks) {
     const stickEls = [...dom.yutSticks.children];
-    stickEls.forEach((stEl) => stEl.classList.remove('is-flat'));
+    // Sticks rest showing their flat ✕ belly; a stick that lands round-side up
+    // gets `is-round` to flip to the dark back (sticks[i] === true means flat).
+    stickEls.forEach((stEl) => stEl.classList.remove('is-round'));
     // Force a reflow so the "rolling" class re-triggers its keyframe animation every throw.
     void dom.yutSticks.offsetWidth;
     stickEls.forEach((stEl) => stEl.classList.add('rolling'));
     return effects.delay(500).then(() => {
       stickEls.forEach((stEl, i) => {
         stEl.classList.remove('rolling');
-        if (sticks[i]) stEl.classList.add('is-flat');
+        if (!sticks[i]) stEl.classList.add('is-round');
       });
     });
   }

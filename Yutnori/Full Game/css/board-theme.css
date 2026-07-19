@@ -34,13 +34,68 @@ body {
   max-width: 1120px;
 }
 
-#app-header h1 {
-  font-family: var(--serif);
-}
-
 #app-header {
+  align-items: center;
   border-bottom: 1px solid rgba(140, 110, 70, 0.18);
 }
+#app-header h1 {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand .hangul { display: none; }
+.fu {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, var(--red), var(--red-deep));
+  color: #f7ecd8;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 5px var(--shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+#header-toggles { gap: 12px; }
+.lang-seg {
+  display: flex;
+  background: #e3d3b0;
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: inset 0 1px 2px rgba(90, 60, 30, 0.18);
+}
+#header-toggles .lang-seg button {
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: var(--sans);
+}
+#header-toggles .lang-seg button.active {
+  background: linear-gradient(160deg, var(--gold), #a97f36);
+  color: #3a2b12;
+  font-weight: 600;
+}
+#header-toggles .iconbtn {
+  min-width: 40px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--panel-line);
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 1px 2px var(--shadow);
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+}
+#header-toggles .iconbtn:hover { background: #fbf5e6; }
 
 /* keep the setup screen readable now that #app is wide */
 #setup-screen {
@@ -49,11 +104,10 @@ body {
   margin-inline: auto;
 }
 
-/* ---- obangsaek stripe under the header ---- */
+/* ---- obangsaek stripe across the very top (full width) ---- */
 .saekdong-stripe {
   height: 4px;
-  margin: 6px 0 2px;
-  border-radius: 2px;
+  margin: 0;
   background: linear-gradient(90deg,
     #3f7d5a 0 20%, #b5342a 20% 40%, #d99a2b 40% 60%, #2b5c96 60% 80%, #6b4a8f 80% 100%);
 }
@@ -285,8 +339,9 @@ body {
   border-radius: 13px / 20px;       /* cut-cylinder rounded caps */
   overflow: hidden;
 }
-/* ROUND back (faces up by default) — dark domed log */
+/* ROUND back (dark domed log) — hidden until a stick lands round-side up */
 #yut-sticks .yut-stick .face.round {
+  transform: rotateX(180deg);
   background: linear-gradient(90deg, #432a15 0%, #78502e 40%, #916639 52%, #6d4525 68%, #3c2413 100%);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
 }
@@ -301,9 +356,9 @@ body {
   background: rgba(255, 240, 210, 0.18);
   filter: blur(3px);
 }
-/* FLAT belly (revealed when .is-flat rotates the stick) — light sawn plane */
+/* FLAT belly (shown at rest, ✕ marks facing up) — light sawn plane */
 #yut-sticks .yut-stick .face.flat {
-  transform: rotateY(180deg);
+  transform: none;
   background:
     linear-gradient(90deg, rgba(110, 72, 36, 0.5) 0 2px, transparent 2px calc(100% - 2px), rgba(110, 72, 36, 0.5) calc(100% - 2px) 100%),
     linear-gradient(115deg, #efdcb4, #e0c48f);
@@ -314,6 +369,8 @@ body {
   justify-content: space-evenly;
   padding: 14px 0;
 }
+/* a stick that lands round-side up flips to show its dark back */
+#yut-sticks .yut-stick.is-round { transform: rotateX(180deg); }
 /* the old CSS-drawn X on .marked is replaced by real glyphs */
 .yut-stick.marked .face.flat::after { content: none; }
 .yut-stick .xmark {
@@ -341,14 +398,24 @@ body {
 
 /* ---- panel cards ---- */
 #turn-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: var(--panel);
   border: 1px solid var(--panel-line);
   border-radius: 14px;
   padding: 14px 16px;
   box-shadow: 0 2px 6px -2px var(--shadow);
-  font-family: var(--serif);
-  font-size: 1.15rem;
 }
+.turn-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  flex: none;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+.turn-who { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+.turn-sub { font-size: 12px; color: var(--ink-soft); }
 #controls-panel {
   background: var(--panel);
   border: 1px solid var(--panel-line);
@@ -358,8 +425,17 @@ body {
 }
 #throw-result-announce {
   text-align: center;
+  min-height: 1.6rem;
   font-family: var(--serif);
+  font-size: 1.05rem;
   color: var(--red);
+}
+#throw-result-announce:empty::before {
+  content: "CAST THE STICKS";
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--ink-soft);
 }
 #throw-btn {
   width: 100%;
@@ -392,21 +468,26 @@ body {
   box-shadow: 0 0 0 2px rgba(198, 154, 76, 0.35);
   color: var(--ink, #3c3327);
 }
-/* home/finished counts as their own card (README §6) */
+/* home/finished counts as their own card, one row per player (README §6) */
 #scoreboard {
+  flex-direction: column;
+  gap: 8px;
   background: var(--panel);
   border: 1px solid var(--panel-line);
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: 12px 16px;
   box-shadow: 0 2px 6px -2px var(--shadow);
-  gap: 0.6rem;
 }
-.score-card {
-  background: #fff8ea;
-  border-radius: 12px;
-  font-family: var(--serif);
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
 }
-.score-card.current { background: #fff2d4; }
+.score-row .nm { font-family: var(--serif); font-weight: 600; }
+.score-row .fin { font-size: 13px; color: var(--ink-soft); }
+.score-row.current .fin { color: var(--ink); font-weight: 600; }
 
 /* keyboard focus outline (README §9) */
 :focus-visible {

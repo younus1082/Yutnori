@@ -14,17 +14,22 @@
   <link rel="stylesheet" href="css/board-theme.css" />
 </head>
 <body>
+  <div class="saekdong-stripe" aria-hidden="true"></div>
   <div id="app">
     <header id="app-header">
-      <h1>Yutnori <span class="hangul">윷놀이</span></h1>
+      <div class="brand">
+        <span class="fu" aria-hidden="true">福</span>
+        <h1>Yutnori</h1>
+      </div>
       <div id="header-toggles">
-        <button id="home-btn" type="button" title="Back to home">⌂ Home</button>
-        <button id="lang-en-btn" type="button">EN</button>
-        <button id="lang-ko-btn" type="button">한국어</button>
-        <button id="mute-btn" type="button">Sound: On</button>
+        <div class="lang-seg">
+          <button id="lang-en-btn" type="button">EN</button>
+          <button id="lang-ko-btn" type="button">한국어</button>
+        </div>
+        <button id="mute-btn" class="iconbtn" type="button" title="Sound">🔊</button>
+        <button id="home-btn" class="iconbtn" type="button" title="Back to home">←</button>
       </div>
     </header>
-    <div class="saekdong-stripe" aria-hidden="true"></div>
 
     <section id="setup-screen"></section>
 
@@ -54,8 +59,8 @@
               <div class="yut-stick"><div class="face round"></div><div class="face flat"><span class="xmark">✕</span><span class="xmark">✕</span><span class="xmark">✕</span><span class="xmark">✕</span></div></div>
               <div class="yut-stick"><div class="face round"></div><div class="face flat"><span class="xmark">✕</span><span class="xmark">✕</span><span class="xmark">✕</span><span class="xmark">✕</span></div></div>
             </div>
-            <button id="throw-btn" type="button">Throw Sticks</button>
             <div id="throw-result-announce" aria-live="polite"></div>
+            <button id="throw-btn" type="button">Throw Sticks</button>
             <div id="pending-throws"></div>
             <div id="assign-panel" hidden></div>
           </div>

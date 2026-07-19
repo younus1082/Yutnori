@@ -167,11 +167,106 @@ body {
   pointer-events: none;
 }
 
-/* selectable tokens get a gold ring (CSS beats the inline stroke attr) */
-.token.selectable .token-ring {
+/* ---- nodes: halo + movable highlight (for the move preview) ---- */
+.halo {
+  fill: none;
   stroke: var(--gold);
-  stroke-width: 1.1;
+  stroke-width: 0.5;
+  opacity: 0;
+  pointer-events: none;
 }
+.node.movable .station {
+  stroke: var(--gold);
+  stroke-width: 0.9;
+}
+.node.movable .halo {
+  opacity: 0.9;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .node.movable .halo { animation: node-pulse 1.5s ease-in-out infinite; }
+}
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.95; }
+}
+
+/* ---- disc tokens (carved stone) ---- */
+.token { cursor: default; }
+.token.selectable { cursor: pointer; }
+.token-disc { stroke-width: 0.45; }
+.token-hi { fill: rgba(255, 255, 255, 0.55); pointer-events: none; }
+.token-ring { stroke-width: 0.5; }
+.token.stacked .token-ring { stroke-width: 0.9; stroke-dasharray: 1 0.6; }
+.token-pick {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.7;
+  opacity: 0;
+  pointer-events: none;
+}
+.token.selectable .token-pick { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .token.selectable .token-pick { animation: node-pulse 1.4s ease-in-out infinite; }
+}
+.token .token-count {
+  fill: #fff;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 3px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 0.25;
+  pointer-events: none;
+}
+
+/* ---- ghost move-preview ---- */
+.preview-path {
+  stroke: var(--gold);
+  stroke-width: 0.5;
+  stroke-dasharray: 1 1;
+  opacity: 0.5;
+  fill: none;
+}
+.ghost-disc { opacity: 0.45; pointer-events: none; }
+.ghost-ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.5;
+  stroke-dasharray: 1.4 1;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ghost-ring {
+    animation: ghost-spin 5s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+@keyframes ghost-spin { to { stroke-dashoffset: -24; } }
+
+/* ---- off-board pens (waiting / home) ---- */
+.pen-box {
+  fill: rgba(255, 252, 244, 0.28);
+  stroke-width: 0.35;
+  stroke-dasharray: 1 0.7;
+  opacity: 0.85;
+}
+.pen-label {
+  fill: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 2px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- start marker ---- */
+.start-label {
+  fill: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 2.6px;
+}
+.start-arrow { fill: var(--red); opacity: 0.6; }
 
 /* ---- 3D yut sticks: dark rounded back + light carved-X belly ---- */
 #yut-sticks {

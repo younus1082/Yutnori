@@ -48,7 +48,7 @@ export function initControls(game, dom, { onNewGame, playerPhotos = [], aiPlayer
   // pending chip would otherwise render a fresh, enabled Confirm button).
   let committing = false;
 
-  drawBoardBase(dom.boardSvg);
+  drawBoardBase(dom.boardSvg, game);
 
   const unsubLocale = onLocaleChange(() => renderAll());
 
@@ -68,7 +68,7 @@ export function initControls(game, dom, { onNewGame, playerPhotos = [], aiPlayer
       onTokenClick: (tokenId) => selectToken(tokenId),
       playerPhotos,
     });
-    if (preview) drawPreview(dom.boardSvg, preview.data);
+    if (preview) drawPreview(dom.boardSvg, preview.data, game.currentPlayerIndex);
     else clearPreview(dom.boardSvg);
   }
 

@@ -1,0 +1,129 @@
+/* Phase 2 — traditional Korean visual theme: hanji paper texture, wood-grain
+   board frame, a dancheong-inspired palette, carved-stick styling, and
+   Korean typography. Everything here is generated in CSS (no image assets),
+   and fonts are a system stack only — the NFR requires local/AI play to
+   work fully offline, so no CDN web fonts are loaded. */
+
+:root {
+  --hanji: #f3ead9;
+  --hanji-dark: #e8dcc4;
+  --ink: #2b2420;
+  --wood-dark: #4a2f1c;
+  --wood-mid: #6b4a2b;
+  --wood-light: #a9784a;
+  --dancheong-red: #b3352c;
+  --dancheong-blue: #22558f;
+  --dancheong-gold: #d1a13a;
+  --dancheong-green: #3d7a4f;
+  --paper-shadow: rgba(43, 36, 32, 0.18);
+
+  --font-kr: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", "Nanum Gothic", sans-serif;
+}
+
+/* Coded hanji (mulberry paper) texture via an inline SVG turbulence filter —
+   no bitmap asset to fetch or ship. */
+body {
+  font-family: var(--font-kr), system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background-color: var(--hanji);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.16  0 0 0 0 0.14  0 0 0 0 0.12  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    linear-gradient(180deg, var(--hanji) 0%, var(--hanji-dark) 100%);
+  background-blend-mode: multiply, normal;
+  background-attachment: fixed;
+}
+
+#app-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  border-bottom: 3px solid var(--dancheong-red);
+  padding-bottom: 0.6rem;
+}
+
+#app-header h1 {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--wood-dark);
+}
+
+#app-header .hangul {
+  color: var(--dancheong-red);
+  opacity: 1;
+  margin-left: 0.4rem;
+}
+
+#header-toggles {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#header-toggles button {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--wood-light);
+  background: var(--hanji);
+  color: var(--wood-dark);
+}
+
+#header-toggles button.active {
+  background: var(--dancheong-red);
+  border-color: var(--dancheong-red);
+  color: var(--hanji);
+  font-weight: 600;
+}
+
+button {
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--wood-light);
+  background: var(--hanji);
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--paper-shadow);
+}
+
+button:hover:not(:disabled) {
+  background: #fffaf0;
+  border-color: var(--dancheong-gold);
+}
+
+#start-game-btn,
+#throw-btn {
+  background: var(--dancheong-red);
+  border-color: var(--dancheong-red);
+  color: #fff8ea;
+}
+
+#start-game-btn:hover:not(:disabled),
+#throw-btn:hover:not(:disabled) {
+  background: #c33f34;
+}
+
+.throw-chip.selected {
+  background: var(--dancheong-gold);
+  border-color: #a9782a;
+  color: var(--ink);
+}
+
+.score-card.current {
+  border-color: var(--dancheong-gold);
+  background: #fff6de;
+}
+
+#rules-panel,
+#assign-panel {
+  background: #fffaf0;
+  border-color: var(--wood-light);
+}
+
+#victory-banner {
+  background: linear-gradient(135deg, #fff6de, #ffe9c2);
+  border: 2px solid var(--dancheong-gold);
+  color: var(--wood-dark);
+  position: relative;
+  overflow: hidden;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yutnori (윷놀이)</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/board.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="app-header">
+      <h1>Yutnori <span class="hangul">윷놀이</span></h1>
+      <div id="header-toggles">
+        <button id="home-btn" type="button" title="Back to home">⌂ Home</button>
+        <button id="lang-en-btn" type="button">EN</button>
+        <button id="lang-ko-btn" type="button">한국어</button>
+        <button id="mute-btn" type="button">Sound: On</button>
+      </div>
+    </header>
+
+    <section id="setup-screen"></section>
+
+    <section id="game-screen" hidden>
+      <div id="turn-banner"></div>
+
+      <div id="board-wrap">
+        <svg id="board-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+      <div id="controls-panel">
+        <div id="yut-sticks">
+          <div class="yut-stick marked"><div class="face round"></div><div class="face flat"></div></div>
+          <div class="yut-stick"><div class="face round"></div><div class="face flat"></div></div>
+          <div class="yut-stick"><div class="face round"></div><div class="face flat"></div></div>
+          <div class="yut-stick"><div class="face round"></div><div class="face flat"></div></div>
+        </div>
+        <button id="throw-btn" type="button">Throw Sticks</button>
+        <div id="throw-result-announce" aria-live="polite"></div>
+        <div id="pending-throws"></div>
+        <div id="assign-panel" hidden></div>
+        <div id="scoreboard"></div>
+      </div>
+
+      <div id="victory-banner" hidden></div>
+
+      <button id="rules-btn" type="button">How to Play</button>
+      <div id="rules-panel" hidden></div>
+      <button id="new-game-btn" type="button">New Game</button>
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

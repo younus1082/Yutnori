@@ -1,0 +1,330 @@
+/* Base layout and setup-screen styles. Phase 1: functional, unthemed.
+   Traditional Korean visual theme lands in Phase 2 (see css/theme.css). */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #f2f2f0;
+  color: #222;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+#app-header h1 {
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+}
+
+.hangul {
+  font-weight: normal;
+  opacity: 0.7;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid #999;
+  border-radius: 6px;
+  background: #fff;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:hover:not(:disabled) {
+  background: #eee;
+}
+
+/* ---- Setup screen ---- */
+
+#setup-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+#setup-screen[hidden],
+#game-screen[hidden] {
+  display: none;
+}
+
+.setup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.setup-field label {
+  font-weight: 600;
+}
+
+.setup-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mode-options {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+}
+
+.mode-option.disabled {
+  opacity: 0.5;
+}
+
+.mode-option .hint {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.nickname-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nickname-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nickname-row .swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+.avatar-upload {
+  display: inline-flex;
+  cursor: pointer;
+  flex: none;
+}
+
+.avatar-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.avatar-preview {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #999;
+}
+
+.avatar-upload:hover .avatar-preview {
+  border-color: #c99a2e;
+}
+
+.ai-flag-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ---- Online lobby ---- */
+
+.online-lobby {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.room-code-display {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1rem;
+  border: 2px dashed var(--dancheong-gold, #c99a2e);
+  border-radius: 8px;
+}
+
+.lobby-player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lobby-player {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar-preview-sm {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+#start-game-btn {
+  align-self: flex-start;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.setup-error {
+  color: #b00020;
+  font-size: 0.9rem;
+}
+
+/* ---- Game screen scaffolding ---- */
+
+#game-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#turn-banner {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+#controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#throw-result-announce {
+  min-height: 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+#pending-throws {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.throw-chip {
+  border: 1px solid #999;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  background: #fff;
+}
+
+.throw-chip.selected {
+  background: #ffe9a8;
+  border-color: #c99a2e;
+}
+
+.throw-chip.backdo {
+  border-style: dashed;
+}
+
+#assign-panel {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: #fafafa;
+}
+
+.assign-tokens {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.assign-token-btn {
+  border-radius: 999px;
+}
+
+.junction-choice-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preview-line {
+  font-size: 0.95rem;
+}
+
+.confirm-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#scoreboard {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.score-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.score-card.current {
+  border-color: #c99a2e;
+  background: #fff8e6;
+}
+
+#victory-banner {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #e8f7e8;
+  border: 1px solid #4caf50;
+}
+
+#rules-panel {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+}
+
+#rules-panel h3 {
+  margin-top: 0;
+}

@@ -27,13 +27,16 @@ const R_BIG = 3.2;
 const R_SMALL = 2.2;
 const TOKEN_R = 2.4;
 
-// Off-board "waiting" (home) and "finished" pens, one per player slot, nudged
-// just inside the frame so the dashed pen boxes never clip the viewBox.
-const HOME_YARD = [
-  [6, 94], [6, 6], [94, 6], [94, 94],
+// On-board pens (README §4): each player's waiting (대기) + finished (도착)
+// pens live in that player's board wedge — Red left, Blue right (the 2-player
+// mockup layout); Green top and Purple bottom extend it to 4 players. Left/
+// right wedges stack the pair vertically (waiting upper, home lower); top/
+// bottom wedges place them side by side.
+const HOME_YARD = [ // 대기 · waiting
+  [24, 37], [76, 37], [37, 24], [37, 76],
 ];
-const FINISH_YARD = [
-  [50, 95], [5, 50], [50, 5], [95, 50],
+const FINISH_YARD = [ // 도착 · finished
+  [24, 63], [76, 63], [63, 24], [63, 76],
 ];
 
 function lerp(a, b, t) {
@@ -88,15 +91,13 @@ function ensureLayer(svg, id) {
 
 /** A dashed pen box + label for a player's waiting/finished yard. */
 function drawPen(layer, [cx, cy], playerIndex, kind) {
-  const w = 8.4;
+  const w = 9;
   const rect = svgEl('rect', {
     x: cx - w / 2, y: cy - w / 2, width: w, height: w, rx: 2,
     class: 'pen-box', stroke: PLAYER_COLORS[playerIndex],
   });
   layer.appendChild(rect);
-  // place the label toward the board centre so it never runs off the edge
-  const ty = cy < 50 ? cy + w / 2 + 3 : cy - w / 2 - 1.4;
-  const text = svgEl('text', { x: cx, y: ty, class: 'pen-label', 'text-anchor': 'middle' });
+  const text = svgEl('text', { x: cx, y: cy - w / 2 - 1.4, class: 'pen-label', 'text-anchor': 'middle' });
   text.textContent = kind === 'waiting' ? '대기' : '도착';
   layer.appendChild(text);
 }

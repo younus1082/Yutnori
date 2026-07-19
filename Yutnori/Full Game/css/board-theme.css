@@ -392,12 +392,28 @@ body {
   box-shadow: 0 0 0 2px rgba(198, 154, 76, 0.35);
   color: var(--ink, #3c3327);
 }
+/* home/finished counts as their own card (README §6) */
+#scoreboard {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 6px -2px var(--shadow);
+  gap: 0.6rem;
+}
 .score-card {
   background: #fff8ea;
   border-radius: 12px;
   font-family: var(--serif);
 }
 .score-card.current { background: #fff2d4; }
+
+/* keyboard focus outline (README §9) */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 #assign-panel {
   background: #fffaf0;
   border-color: var(--panel-line);

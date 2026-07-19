@@ -1,0 +1,327 @@
+/* =====================================================================
+   BOARD-THEME (appearance only)
+   Ports the look of the standalone board mockup onto the real game:
+   palette, Korean type, obangsaek stripe, wood frame + brass corners,
+   hanji "paper" board, node/star motifs, 3D yut sticks, and the
+   two-column board + panel layout with card styling.
+
+   This file is layered LAST (after main/theme/board css) and only sets
+   visual properties. No game logic, geometry, or rules are involved.
+   ===================================================================== */
+
+:root {
+  --serif: 'Noto Serif KR', Garamond, 'Times New Roman', serif;
+  --sans: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, -apple-system, sans-serif;
+  --panel: #f6efdd;
+  --panel-line: #dccba6;
+  --ink-soft: #8a7b62;
+  --red: #b5342a;
+  --red-deep: #8f2820;
+  --blue: #2b5c96;
+  --gold: #c69a4c;
+  --brass: #c9a95e;
+  --wood: #8a5c33;
+  --wood-2: #6e4526;
+  --shadow: rgba(60, 40, 20, 0.22);
+}
+
+body {
+  font-family: var(--sans);
+}
+
+#app {
+  /* Widen so the board + panel sit side by side (setup stays constrained). */
+  max-width: 1120px;
+}
+
+#app-header h1 {
+  font-family: var(--serif);
+}
+
+#app-header {
+  border-bottom: 1px solid rgba(140, 110, 70, 0.18);
+}
+
+/* keep the setup screen readable now that #app is wide */
+#setup-screen {
+  max-width: 680px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* ---- obangsaek stripe under the header ---- */
+.saekdong-stripe {
+  height: 4px;
+  margin: 6px 0 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,
+    #3f7d5a 0 20%, #b5342a 20% 40%, #d99a2b 40% 60%, #2b5c96 60% 80%, #6b4a8f 80% 100%);
+}
+
+/* ---- two-column layout: board left, panel right ---- */
+#game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px;
+  align-items: start;
+}
+.board-col { min-width: 0; }
+.panel-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.board-eyebrow {
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 820px) {
+  #game-layout { grid-template-columns: 1fr; }
+  .panel-col { order: 2; }
+  #board-wrap { max-width: 560px; margin-inline: auto; }
+}
+
+/* ---- wood board frame + brass corners + hanji paper ---- */
+#board-wrap {
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  aspect-ratio: auto;               /* inner svg now defines height */
+  border: none;                     /* replace the old flat border-image */
+  border-radius: 16px;
+  background: linear-gradient(150deg, var(--wood) 0%, var(--wood-2) 45%, var(--wood-dark, #4c2f18) 100%);
+  box-shadow:
+    0 18px 40px -14px var(--shadow),
+    inset 0 0 0 2px rgba(255, 220, 160, 0.10),
+    inset 0 3px 10px rgba(0, 0, 0, 0.28);
+}
+#board-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(201, 169, 94, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
+.frame-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--brass);
+  opacity: 0.85;
+  z-index: 3;
+  pointer-events: none;
+}
+.frame-corner.tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; border-top-left-radius: 6px; }
+.frame-corner.tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; border-top-right-radius: 6px; }
+.frame-corner.bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; border-bottom-left-radius: 6px; }
+.frame-corner.br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; border-bottom-right-radius: 6px; }
+
+#board-svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
+  border-radius: 8px;
+  background: radial-gradient(130% 130% at 20% 10%, #f4ead3, #e7d8b6 70%);
+  box-shadow: inset 0 0 40px rgba(120, 85, 40, 0.18);
+}
+
+/* ---- board svg: links, nodes, corner/center star motif ---- */
+.board-line {
+  stroke: #9c7c4e;
+  stroke-width: 0.5;
+  opacity: 0.6;
+}
+.station {
+  fill: #f3e8cf;
+  stroke: #9c7c4e;
+  stroke-width: 0.4;
+}
+.station.corner,
+.station.center {
+  fill: #f3e8cf;
+  stroke: var(--wood);
+  stroke-width: 0.55;
+}
+.node-ring {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 0.35;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.node-star {
+  stroke: var(--red);
+  stroke-width: 0.3;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* selectable tokens get a gold ring (CSS beats the inline stroke attr) */
+.token.selectable .token-ring {
+  stroke: var(--gold);
+  stroke-width: 1.1;
+}
+
+/* ---- 3D yut sticks: dark rounded back + light carved-X belly ---- */
+#yut-sticks {
+  gap: 14px;
+  perspective: 820px;
+  min-height: 128px;
+  align-items: center;
+}
+#yut-sticks .yut-stick {
+  width: 26px;
+  height: 112px;
+  border-radius: 0;
+}
+#yut-sticks .yut-stick .face {
+  border: none;
+  border-radius: 13px / 20px;       /* cut-cylinder rounded caps */
+  overflow: hidden;
+}
+/* ROUND back (faces up by default) — dark domed log */
+#yut-sticks .yut-stick .face.round {
+  background: linear-gradient(90deg, #432a15 0%, #78502e 40%, #916639 52%, #6d4525 68%, #3c2413 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+#yut-sticks .yut-stick .face.round::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 6%;
+  width: 24%;
+  height: 88%;
+  border-radius: 50%;
+  background: rgba(255, 240, 210, 0.18);
+  filter: blur(3px);
+}
+/* FLAT belly (revealed when .is-flat rotates the stick) — light sawn plane */
+#yut-sticks .yut-stick .face.flat {
+  transform: rotateY(180deg);
+  background:
+    linear-gradient(90deg, rgba(110, 72, 36, 0.5) 0 2px, transparent 2px calc(100% - 2px), rgba(110, 72, 36, 0.5) calc(100% - 2px) 100%),
+    linear-gradient(115deg, #efdcb4, #e0c48f);
+  box-shadow: inset 0 0 0 1px rgba(120, 80, 40, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 14px 0;
+}
+/* the old CSS-drawn X on .marked is replaced by real glyphs */
+.yut-stick.marked .face.flat::after { content: none; }
+.yut-stick .xmark {
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+  font-family: var(--sans);
+  color: rgba(88, 56, 26, 0.85);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.yut-stick .xmark.bd {
+  color: var(--red);
+  font-size: 22px;
+}
+
+/* nicer toss (kept at ~0.5s to match the reveal timing in controls.js) */
+@media (prefers-reduced-motion: no-preference) {
+  #yut-sticks .yut-stick.rolling { animation: yut-toss 0.5s ease; }
+}
+@keyframes yut-toss {
+  0% { transform: translateY(0) rotateX(0); }
+  45% { transform: translateY(-46px) rotateX(540deg); }
+  100% { transform: translateY(0) rotateX(0); }
+}
+
+/* ---- panel cards ---- */
+#turn-banner {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px -2px var(--shadow);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+}
+#controls-panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 6px -2px var(--shadow);
+}
+#throw-result-announce {
+  text-align: center;
+  font-family: var(--serif);
+  color: var(--red);
+}
+#throw-btn {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 11px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #f7ecd8;
+  background: linear-gradient(160deg, var(--red), var(--red-deep));
+  box-shadow: 0 3px 8px -2px var(--shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+#throw-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+  background: linear-gradient(160deg, var(--red), var(--red-deep));
+}
+#pending-throws { justify-content: center; }
+.throw-chip {
+  font-family: var(--serif);
+  border: 1px solid var(--panel-line);
+  background: #fff8ea;
+  border-radius: 12px;
+  padding: 9px 14px;
+}
+.throw-chip.selected {
+  border-color: var(--gold);
+  background: #fff2d4;
+  box-shadow: 0 0 0 2px rgba(198, 154, 76, 0.35);
+  color: var(--ink, #3c3327);
+}
+.score-card {
+  background: #fff8ea;
+  border-radius: 12px;
+  font-family: var(--serif);
+}
+.score-card.current { background: #fff2d4; }
+#assign-panel {
+  background: #fffaf0;
+  border-color: var(--panel-line);
+  border-radius: 14px;
+}
+#rules-panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+}
+.panel-actions {
+  display: flex;
+  gap: 10px;
+}
+.panel-actions button { flex: 1; }
+
+/* ---- victory banner ---- */
+#victory-banner {
+  margin-top: 20px;
+  font-family: var(--serif);
+  border-radius: 16px;
+}

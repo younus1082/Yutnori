@@ -95,6 +95,24 @@ export function drawBoardBase(svg) {
     const r = isCorner || isCenter ? 3.2 : 2.2;
     const circle = svgEl('circle', { cx: x, cy: y, r, class: `station${isCorner ? ' corner' : ''}${isCenter ? ' center' : ''}`, 'data-station': id });
     stationsLayer.appendChild(circle);
+    // Decorative ring + 8-point star motif on the "big" corner/center
+    // stations. Appearance only: non-interactive, drawn under the tokens.
+    if (isCorner || isCenter) {
+      stationsLayer.appendChild(svgEl('circle', { cx: x, cy: y, r: r * 0.66, class: 'node-ring' }));
+      for (let k = 0; k < 4; k++) {
+        const ang = (k * Math.PI) / 4;
+        const L = r * 0.5;
+        stationsLayer.appendChild(
+          svgEl('line', {
+            x1: x - Math.cos(ang) * L,
+            y1: y - Math.sin(ang) * L,
+            x2: x + Math.cos(ang) * L,
+            y2: y + Math.sin(ang) * L,
+            class: 'node-star',
+          }),
+        );
+      }
+    }
   }
 }
 
